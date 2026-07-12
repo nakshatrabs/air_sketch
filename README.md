@@ -1,4 +1,4 @@
-# Air Draw Engine — Spatial Creative Canvas Engine
+# Air Sketch Engine — Spatial Creative Canvas Engine
 
 An interactive spatial graphics platform built with Next.js that transforms your camera feed into a real-time digital art board. By leveraging browser-native computer vision models, users can paint on-screen simply by gesturing in front of their webcam.
 
