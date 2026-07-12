@@ -1,3 +1,37 @@
+# Air Draw Engine — Spatial Creative Canvas Engine
+
+An interactive spatial graphics platform built with Next.js that transforms your camera feed into a real-time digital art board. By leveraging browser-native computer vision models, users can paint on-screen simply by gesturing in front of their webcam.
+
+---
+
+## 🛠 Tech Stack & Dependencies
+
+- **Framework:** Next.js (App Router) + TypeScript
+- **Styling:** Tailwind CSS (Dark Mode Glassmorphism)
+- **Icons:** `lucide-react`
+- **Vision Models:** MediaPipe Hands (via WebAssembly CDN)
+- **Rendering Pipeline:** HTML5 Canvas API (Dual-Layer Architecture)
+
+---
+
+## 🚀 Key Architectural Features
+
+### 1. Dual-Layer Canvas Engine
+To maximize rendering performance and maintain 60 FPS, the rendering engine separates static canvas drawing from variable UI indicators:
+*   **Video Layer (Bottom):** Hardware-accelerated camera stream mirrored horizontally (`scale-x-[-1]`) for an intuitive mirror reflection effect.
+*   **Drawing Layer (Middle):** An isolated transparent canvas where permanent drawings are committed.
+*   **Cursor Overlay Layer (Top):** A dynamic canvas that clears and redraws every frame, rendering the contextual cursor circle around the user's index finger without redrawing the artwork underneath.
+
+### 2. Gesture Vector Logic
+The application decodes coordinates from the MediaPipe Hand tracking model graph:
+*   **Drawing Mode:** Raised Index Finger (`INDEX_FINGER_TIP.y < INDEX_FINGER_PIP.y`) while the middle finger remains down.
+*   **Hover/Navigation Mode:** Raised Index + Middle Finger simultaneously. This instantly interrupts the drawing line vector paths, allowing the user to reposition their hand across the screen without accidental paint strokes.
+
+### 3. Path Interpolation & Smoothing
+Raw coordinate points captured frame-by-frame from web cameras can be jittery due to lighting or camera refresh limits. Air Draw implements **Quadratic Bezier Curves** (`ctx.quadraticCurveTo()`) mapping tracking inputs to calculated midpoints. This creates smooth strokes instead of sharp, angular webbed polylines.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
